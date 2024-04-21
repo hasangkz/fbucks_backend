@@ -1,7 +1,6 @@
 // nodemon ile calistirmak istedigmiz zaman artik 'npm run server' komutunu calistirmamiz yeter
 
 const express = require('express');
-
 const mongoose = require('mongoose');
 const cors = require('cors');
 
@@ -28,7 +27,11 @@ const connect = async () => {
 };
 
 //middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: 'https://fbucks-frontend.onrender.com',
+  })
+);
 app.use(express.json());
 app.use(logger('dev'));
 app.use('/api/categories', categoryRoute);
