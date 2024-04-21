@@ -25,21 +25,22 @@ const connect = async () => {
     throw new Error('Error Mongoose!');
   }
 };
+
 const corsOptions = {
-  credentials: true,
-  origin: ['*', 'https://fbucks-frontend.onrender.com'], // Whitelist the domains you want to allow
+  origin: '*',
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
 };
 //middlewares
 app.use(cors(corsOptions));
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET,HEAD,OPTIONS,POST,PUT,DELETE'
+  res.header(
+    'Access-Control-Allow-Origin',
+    'https://fbucks-frontend.onrender.com'
   );
-  res.setHeader(
+  res.header(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    'Origin, X-Requested-With, Content-Type, Accept'
   );
   next();
 });
