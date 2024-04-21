@@ -15,7 +15,7 @@ const authRoute = require('./routes/auth.js');
 const userRoute = require('./routes/users.js');
 dotenv.config();
 
-const portNumber = process.env.PORT;
+const portNumber = process.env.PORT || 5005;
 
 const connect = async () => {
   try {
@@ -25,13 +25,24 @@ const connect = async () => {
     throw new Error('Error Mongoose!');
   }
 };
-
+const corsOptions = {
+  credentials: true,
+  origin: ['*', 'https://fbucks-frontend.onrender.com'], // Whitelist the domains you want to allow
+};
 //middlewares
-app.use(
-  cors({
-    origin: '*',
-  })
-);
+app.use(cors(corsOptions));
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET,HEAD,OPTIONS,POST,PUT,DELETE'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  next();
+});
 app.use(express.json());
 app.use(logger('dev'));
 app.use('/api/categories', categoryRoute);
@@ -39,10 +50,7 @@ app.use('/api/products', productRoute);
 app.use('/api/bills', billRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  next();
-});
+
 app.get('/', (req, res) => {
   return res.send('hasangkz');
 });
