@@ -29,7 +29,7 @@ const connect = async () => {
 //middlewares
 app.use(
   cors({
-    origin: 'https://fbucks-frontend.onrender.com',
+    origin: '*',
   })
 );
 app.use(express.json());
@@ -39,6 +39,10 @@ app.use('/api/products', productRoute);
 app.use('/api/bills', billRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
 app.get('/', (req, res) => {
   return res.send('hasangkz');
 });
